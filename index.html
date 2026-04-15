@@ -15,8 +15,7 @@
 <!-- Hero Section -->
 <section class="hero">
     <div class="container">
-        <h1 class="title">MERRIN</h1>
-        <h2 class="subtitle">A Benchmark for Multimodal Evidence Retrieval and Reasoning in Noisy Web Environments</h2>
+        <h1 class="title"><span class="title-name">MERRIN:</span> A Benchmark for Multimodal Evidence Retrieval<br>and Reasoning in Noisy Web Environments</h1>
         <div class="authors">
             <span class="author"><a href="https://hannight.github.io/" target="_blank">Han Wang</a><sup>1*</sup></span>,
             <span class="author"><a href="https://meetdavidwan.github.io/" target="_blank">David Wan</a><sup>1*</sup></span>,
@@ -77,47 +76,8 @@
     </div>
 </section>
 
-<!-- Key Features -->
-<section class="section" id="features">
-    <div class="container">
-        <h2 class="section-title">Key Features</h2>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon"><i class="fa-solid fa-comment-dots"></i></div>
-                <h3>No Modality Cues</h3>
-                <p>Questions are phrased in natural language without explicit references to specific modalities (e.g., "in the image..."), requiring agents to independently identify what to retrieve.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon"><i class="fa-solid fa-photo-film"></i></div>
-                <h3>Diverse Modalities</h3>
-                <p>Evidence spans text, images, video, and audio&mdash;going beyond the text+image focus of prior work to cover modalities common in real-world web search.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon"><i class="fa-solid fa-shuffle"></i></div>
-                <h3>Noisy & Conflicting Evidence</h3>
-                <p>Questions are designed so that web search returns not only relevant documents but also incomplete, conflicting, or misleading distractors.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon"><i class="fa-solid fa-diagram-project"></i></div>
-                <h3>Multi-hop Reasoning</h3>
-                <p>73.5% of questions require both multi-hop reasoning across sources and multimodal conflict resolution, testing complex compositional reasoning.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon"><i class="fa-solid fa-user-check"></i></div>
-                <h3>Human Annotated</h3>
-                <p>162 expert-curated questions with multi-round quality control, including adversarial text-only search verification to ensure non-text evidence is required.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon"><i class="fa-solid fa-globe"></i></div>
-                <h3>Open-Web Search</h3>
-                <p>Agents search the live open web rather than a static corpus, reflecting realistic deployment conditions for search-augmented AI systems.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
 <!-- Comparison Table -->
-<section class="section section-alt" id="comparison">
+<section class="section" id="comparison">
     <div class="container">
         <h2 class="section-title">Comparison with Existing Benchmarks</h2>
         <div class="table-wrapper">
@@ -210,6 +170,45 @@
             </table>
         </div>
         <p class="table-caption">Comparison of MERRIN with existing benchmarks. We compare datasets across multiple dimensions: whether queries do not contain explicit modality cues (<em>No Explicit Modality Cues</em>), evidence modalities necessary to answer them (<em>Evidence Modalities</em>), whether questions reflect noisy or conflicting web sources (<em>Web Noise Reflection</em>), whether they require multi-hop reasoning (<em>Multi-hop</em>), whether they are human-annotated (<em>Human Annotated</em>), and whether they support open-web search (<em>Open Search</em>). MERRIN uniquely covers all dimensions, supporting multiple evidence modalities across text (T), image (I), video (V), and audio (A). "&ndash;" in <em>No Explicit Modality Cues</em> indicates settings where modality selection is unnecessary (e.g., controlled or single modality setups).</p>
+    </div>
+</section>
+
+<!-- Key Characteristics -->
+<section class="section section-alt" id="features">
+    <div class="container">
+        <h2 class="section-title">Key Characteristics</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-comment-dots"></i></div>
+                <h3>No Modality Cues</h3>
+                <p>Questions are phrased in natural language without explicit references to specific modalities (e.g., "in the image..."), requiring agents to independently identify what to retrieve.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-photo-film"></i></div>
+                <h3>Diverse Modalities</h3>
+                <p>Evidence spans text, images, video, and audio&mdash;going beyond the text+image focus of prior work to cover modalities common in real-world web search.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-shuffle"></i></div>
+                <h3>Noisy & Conflicting Evidence</h3>
+                <p>Questions are designed so that web search returns not only relevant documents but also incomplete, conflicting, or misleading distractors.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-diagram-project"></i></div>
+                <h3>Multi-hop Reasoning</h3>
+                <p>73.5% of questions require both multi-hop reasoning across sources and multimodal conflict resolution, testing complex compositional reasoning.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-user-check"></i></div>
+                <h3>Human Annotated</h3>
+                <p>162 expert-curated questions with multi-round quality control, including adversarial text-only search verification to ensure non-text evidence is required.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-globe"></i></div>
+                <h3>Open-Web Search</h3>
+                <p>Agents search the live open web rather than a static corpus, reflecting realistic deployment conditions for search-augmented AI systems.</p>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -538,6 +537,71 @@
                 <p>Humans benefit substantially from additional time (59.2% &rarr; 71.4%), while agents show diminishing returns (34.0% &rarr; 40.1%), consistent with over-exploration rather than productive deepening of search.</p>
             </div>
         </div>
+
+        <hr class="section-divider">
+
+        <h3 class="subsection-title">Human Error Analysis</h3>
+        <p class="subsection-description">Among incorrect human responses, errors are predominantly minor extraction mistakes rather than fundamental failures in source identification.</p>
+
+        <div class="error-analysis-layout">
+            <div class="error-chart">
+                <svg viewBox="0 0 320 320" class="pie-chart">
+                    <!-- 43% Wrong Count: 0 to 154.8deg -->
+                    <circle r="120" cx="160" cy="160" fill="transparent" stroke="#1a56db" stroke-width="80"
+                        stroke-dasharray="324.2 429.8" stroke-dashoffset="0" transform="rotate(-90 160 160)"/>
+                    <!-- 29% Right Source, Wrong Detail: 154.8 to 259.2deg -->
+                    <circle r="120" cx="160" cy="160" fill="transparent" stroke="#3b82f6" stroke-width="80"
+                        stroke-dasharray="218.9 535.1" stroke-dashoffset="-324.2" transform="rotate(-90 160 160)"/>
+                    <!-- 14% Partial/Imprecise: 259.2 to 309.6deg -->
+                    <circle r="120" cx="160" cy="160" fill="transparent" stroke="#93c5fd" stroke-width="80"
+                        stroke-dasharray="105.6 648.4" stroke-dashoffset="-543.1" transform="rotate(-90 160 160)"/>
+                    <!-- 14% Others: 309.6 to 360deg -->
+                    <circle r="120" cx="160" cy="160" fill="transparent" stroke="#0f3a8e" stroke-width="80"
+                        stroke-dasharray="105.6 648.4" stroke-dashoffset="-648.7" transform="rotate(-90 160 160)"/>
+                    <!-- Center white circle -->
+                    <circle r="80" cx="160" cy="160" fill="white"/>
+                    <text x="160" y="155" text-anchor="middle" font-size="14" font-weight="600" fill="#1f2937">Human</text>
+                    <text x="160" y="175" text-anchor="middle" font-size="14" font-weight="600" fill="#1f2937">Errors</text>
+                </svg>
+                <div class="pie-legend">
+                    <div class="legend-item"><span class="legend-dot" style="background:#1a56db"></span>Wrong Count (43%)</div>
+                    <div class="legend-item"><span class="legend-dot" style="background:#3b82f6"></span>Right Source, Wrong Detail (29%)</div>
+                    <div class="legend-item"><span class="legend-dot" style="background:#93c5fd"></span>Partial/Imprecise Answer (14%)</div>
+                    <div class="legend-item"><span class="legend-dot" style="background:#0f3a8e"></span>Others (14%)</div>
+                </div>
+            </div>
+            <div class="error-cards">
+                <div class="error-card">
+                    <div class="error-card-header">
+                        <span class="error-card-pct" style="color:#1a56db">43%</span>
+                        <h4>Wrong Count</h4>
+                    </div>
+                    <p>Correct source identified but miscounted by a small margin (e.g., off by one album cover or one second of video).</p>
+                </div>
+                <div class="error-card">
+                    <div class="error-card-header">
+                        <span class="error-card-pct" style="color:#3b82f6">29%</span>
+                        <h4>Right Source,<br>Wrong Detail</h4>
+                    </div>
+                    <p>Correct resource found but wrong detail extracted, such as reading a value from the wrong moment in a video.</p>
+                </div>
+                <div class="error-card">
+                    <div class="error-card-header">
+                        <span class="error-card-pct" style="color:#93c5fd">14%</span>
+                        <h4>Partial/Imprecise Answer</h4>
+                    </div>
+                    <p>On the right track but insufficiently specific (e.g., "conservation law" instead of "conservation of charge").</p>
+                </div>
+                <div class="error-card">
+                    <div class="error-card-header">
+                        <span class="error-card-pct" style="color:#0f3a8e">14%</span>
+                        <h4>Others</h4>
+                    </div>
+                    <p>Genuinely incorrect answers where the annotator failed to identify the correct source or reasoning path.</p>
+                </div>
+            </div>
+        </div>
+        <p class="error-takeaway"><strong>86% of human errors</strong> involve the correct source but fail at fine-grained information extraction&mdash;underscoring that the benchmark's difficulty lies in precise multimodal extraction rather than source discovery.</p>
     </div>
 </section>
 

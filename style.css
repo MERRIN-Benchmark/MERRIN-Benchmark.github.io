@@ -59,21 +59,19 @@ a:hover {
 }
 
 .hero .title {
-    font-size: 4rem;
+    font-size: 1.7rem;
     font-weight: 700;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
     color: var(--primary-dark);
-    margin-bottom: 12px;
+    margin-bottom: 24px;
+    line-height: 1.4;
 }
 
-.hero .subtitle {
-    font-size: 1.4rem;
-    font-weight: 400;
-    color: var(--text-secondary);
-    max-width: 960px;
-    margin: 0 auto 28px;
-    line-height: 1.6;
-    white-space: nowrap;
+.title-name {
+    background: linear-gradient(135deg, #3b82f6, #7c3aed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .highlight {
@@ -665,6 +663,117 @@ a:hover {
 @media (max-width: 768px) {
     .findings-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+/* ===== Human Error Analysis ===== */
+.error-analysis-layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 40px;
+    align-items: center;
+    margin-top: 24px;
+}
+
+.error-chart {
+    text-align: center;
+}
+
+.pie-chart {
+    width: 240px;
+    height: 240px;
+}
+
+.pie-legend {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
+    padding-left: 30px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+}
+
+.legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+
+.error-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.error-card {
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg-alt);
+}
+
+.error-card-header {
+    display: flex;
+    align-items: last baseline;
+    gap: 10px;
+    margin-bottom: 6px;
+    flex-wrap: nowrap;
+}
+
+.error-card-header h4 {
+    line-height: 1.3;
+}
+
+.error-card-pct {
+    font-size: 1.5rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.error-card h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.error-card p {
+    font-size: 0.84rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.error-takeaway {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin-top: 24px;
+    padding: 16px 20px;
+    background: var(--primary-light);
+    border-left: 4px solid var(--primary);
+    border-radius: 0 8px 8px 0;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .error-analysis-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .error-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .pie-legend {
+        align-items: center;
+        padding-left: 0;
     }
 }
 
