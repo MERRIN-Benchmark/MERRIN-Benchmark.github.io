@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MERRIN: Multimodal Evidence Retrieval and Reasoning in Noisy Web Environments</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <h1 class="title">MERRIN</h1>
+        <h2 class="subtitle">A Benchmark for Multimodal Evidence Retrieval and Reasoning in Noisy Web Environments</h2>
+        <div class="authors">
+            <span class="author"><a href="https://hannight.github.io/" target="_blank">Han Wang</a><sup>1*</sup></span>,
+            <span class="author"><a href="https://meetdavidwan.github.io/" target="_blank">David Wan</a><sup>1*</sup></span>,
+            <span class="author"><a href="https://amy-hyunji.github.io/" target="_blank">Hyunji Lee</a><sup>1*</sup></span>,
+            <span class="author"><a href="https://thinhphp.github.io/" target="_blank">Thinh Pham</a><sup>2</sup></span>,
+            <span class="author"><a href="https://www.linkedin.com/in/mikaela-cankosyan/" target="_blank">Mikaela Cankosyan</a><sup>2</sup></span>,
+            <span class="author"><a href="https://katie-chen2.github.io/" target="_blank">Weiyuan Chen</a><sup>2</sup></span>,
+            <br>
+            <span class="author"><a href="https://esteng.github.io/" target="_blank">Elias Stengel-Eskin</a><sup>3</sup></span>,
+            <span class="author"><a href="https://tuvllms.github.io/" target="_blank">Tu Vu</a><sup>2</sup></span>,
+            <span class="author"><a href="https://www.cs.unc.edu/~mbansal/" target="_blank">Mohit Bansal</a><sup>1</sup></span>
+        </div>
+        <div class="affiliations">
+            <span><sup>1</sup>UNC Chapel Hill</span>
+            <span><sup>2</sup>Virginia Tech</span>
+            <span><sup>3</sup>University of Texas at Austin</span>
+        </div>
+        <p class="equal-contrib"><sup>*</sup>Equal contribution</p>
+        <div class="links">
+            <a href="https://arxiv.org/abs/" class="btn" target="_blank"><i class="fa-solid fa-file-lines"></i> Paper</a>
+            <a href="https://github.com/HanNight/MERRIN" class="btn" target="_blank"><i class="fa-brands fa-github"></i> Code</a>
+            <a href="https://huggingface.co/datasets/HanNight/MERRIN" class="btn" target="_blank"><i class="fa-solid fa-database"></i> Dataset</a>
+        </div>
+    </div>
+</section>
+
+<!-- Overview Figure -->
+<section class="section" id="overview">
+    <div class="container">
+        <div class="figure-container">
+            <img src="static/figure.png" alt="MERRIN Overview: Given a query, the agent must identify the appropriate modality, retrieve relevant evidence, and perform multi-hop reasoning over noisy web sources." class="figure-img">
+            <p class="figure-caption">
+                <strong>Overview of MERRIN.</strong> Given a query, the agent must identify the appropriate modality, retrieve relevant evidence, and perform multi-hop reasoning over noisy, conflicting, and incomplete web sources. The <span style="color:#009437">green</span> path shows the <strong>ideal</strong> case: the agent selects the correct modality and source, arriving at the correct answer.
+                The remaining paths illustrate three <strong>failure</strong> modes:
+                <em>Reasoning Error</em> (<span style="color:#2563eb">blue</span>)&mdash;correct source retrieved but incorrect grounding to the evidence;
+                <em>Modality Error</em> (<span style="color:#dc2626">red</span>)&mdash;agent relies on text when asked about visual information;
+                <em>Retrieval Error</em> (<span style="color:#7c3aed">purple</span>)&mdash;correct modality but misleading source selected.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Abstract -->
+<section class="section section-alt" id="abstract">
+    <div class="container">
+        <h2 class="section-title">Abstract</h2>
+        <p class="abstract-text">
+            Motivated by the underspecified, multi-hop nature of search queries and the multimodal, heterogeneous, and often conflicting nature of real-world web results, we introduce <strong>MERRIN</strong> (<u>M</u>ultimodal <u>E</u>vidence <u>R</u>etrieval and <u>R</u>easoning <u>i</u>n <u>N</u>oisy Web Environments), a human-annotated benchmark for evaluating search-augmented agents.
+            MERRIN measures AI agents' ability to identify relevant modalities, retrieve multimodal evidence, and perform multi-hop reasoning over noisy web sources.
+            It differs from prior work in three important aspects: (1) using natural language queries without explicit modality cues, (2) incorporating underexplored modalities such as video and audio, and (3) requiring the retrieval of complex, often noisy or conflicting multimodal evidence during web search.
+            We evaluate diverse search agents powered by ten models, including strong closed-source models (e.g., GPT-5.4-mini, Gemini 3/3.1 Flash/Pro) and open-weight models (Qwen3-4B/30B/235B), across three search settings (no search, native search, and agentic search).
+            Our results show that MERRIN is highly challenging: the average accuracy across all agents is 22.3%, with the best-performing agent reaching only 40.1%.
+            We further observe that while stronger agents like Gemini Deep Research achieve higher performance, gains are modest due to over-exploration; they take more steps and use more tools, but are often distracted by conflicting or partially relevant web content, leading to incorrect answers.
+            Our analysis of agent bottlenecks shows that while both search effectiveness and multimodal reasoning remain critical challenges, reasoning is the more pressing limitation.
+            Compared to humans, these agents consume more resources yet achieve lower accuracy, largely due to inefficient source selection and an overreliance on text modalities.
+            These findings highlight the need for search agents capable of robust search and reasoning across diverse modalities in noisy web environments, making MERRIN a valuable testbed for evaluating such capabilities.
+        </p>
+    </div>
+</section>
+
+<!-- Key Features -->
+<section class="section" id="features">
+    <div class="container">
+        <h2 class="section-title">Key Features</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-comment-dots"></i></div>
+                <h3>No Modality Cues</h3>
+                <p>Questions are phrased in natural language without explicit references to specific modalities (e.g., "in the image..."), requiring agents to independently identify what to retrieve.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-photo-film"></i></div>
+                <h3>Diverse Modalities</h3>
+                <p>Evidence spans text, images, video, and audio&mdash;going beyond the text+image focus of prior work to cover modalities common in real-world web search.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-shuffle"></i></div>
+                <h3>Noisy & Conflicting Evidence</h3>
+                <p>Questions are designed so that web search returns not only relevant documents but also incomplete, conflicting, or misleading distractors.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-diagram-project"></i></div>
+                <h3>Multi-hop Reasoning</h3>
+                <p>73.5% of questions require both multi-hop reasoning across sources and multimodal conflict resolution, testing complex compositional reasoning.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-user-check"></i></div>
+                <h3>Human Annotated</h3>
+                <p>162 expert-curated questions with multi-round quality control, including adversarial text-only search verification to ensure non-text evidence is required.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-globe"></i></div>
+                <h3>Open-Web Search</h3>
+                <p>Agents search the live open web rather than a static corpus, reflecting realistic deployment conditions for search-augmented AI systems.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Comparison Table -->
+<section class="section section-alt" id="comparison">
+    <div class="container">
+        <h2 class="section-title">Comparison with Existing Benchmarks</h2>
+        <div class="table-wrapper">
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Benchmark</th>
+                        <th>No Explicit<br>Modality Cues</th>
+                        <th>Evidence<br>Modalities</th>
+                        <th>Web Noise<br>Reflection</th>
+                        <th>Multi-hop</th>
+                        <th>Human<br>Annotated</th>
+                        <th>Open<br>Search</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>BrowseComp</td>
+                        <td>&ndash;</td>
+                        <td>T</td>
+                        <td class="cross">&cross;</td>
+                        <td class="check">&check;</td>
+                        <td class="check">&check;</td>
+                        <td class="check">&check;</td>
+                    </tr>
+                    <tr>
+                        <td>MM-BrowseComp</td>
+                        <td class="cross">&cross;</td>
+                        <td>T/I/V</td>
+                        <td class="cross">&cross;</td>
+                        <td class="check">&check;</td>
+                        <td class="check">&check;</td>
+                        <td class="check">&check;</td>
+                    </tr>
+                    <tr>
+                        <td>BrowseComp-VL</td>
+                        <td class="cross">&cross;</td>
+                        <td>T/I</td>
+                        <td class="cross">&cross;</td>
+                        <td class="check">&check;</td>
+                        <td class="cross">&cross;</td>
+                        <td class="check">&check;</td>
+                    </tr>
+                    <tr>
+                        <td>BrowseComp-V<sup>3</sup></td>
+                        <td class="cross">&cross;</td>
+                        <td>T/I</td>
+                        <td class="cross">&cross;</td>
+                        <td class="check">&check;</td>
+                        <td class="check">&check;</td>
+                        <td class="check">&check;</td>
+                    </tr>
+                    <tr>
+                        <td>SealQA</td>
+                        <td>&ndash;</td>
+                        <td>T</td>
+                        <td class="check">&check;</td>
+                        <td class="check">&check;</td>
+                        <td class="check">&check;</td>
+                        <td class="check">&check;</td>
+                    </tr>
+                    <tr>
+                        <td>MMSearch</td>
+                        <td>&ndash;</td>
+                        <td>T/I</td>
+                        <td class="cross">&cross;</td>
+                        <td class="check">&check;</td>
+                        <td class="check">&check;</td>
+                        <td class="cross">&cross;</td>
+                    </tr>
+                    <tr>
+                        <td>MMSearch-Plus</td>
+                        <td class="cross">&cross;</td>
+                        <td>T/I</td>
+                        <td class="check">&check;</td>
+                        <td class="check">&check;</td>
+                        <td class="check">&check;</td>
+                        <td class="check">&check;</td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td><strong>MERRIN (Ours)</strong></td>
+                        <td class="check">&check;</td>
+                        <td><strong>T/I/V/A</strong></td>
+                        <td class="check">&check;</td>
+                        <td class="check">&check;</td>
+                        <td class="check">&check;</td>
+                        <td class="check">&check;</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="table-caption">Comparison of MERRIN with existing benchmarks. We compare datasets across multiple dimensions: whether queries do not contain explicit modality cues (<em>No Explicit Modality Cues</em>), evidence modalities necessary to answer them (<em>Evidence Modalities</em>), whether questions reflect noisy or conflicting web sources (<em>Web Noise Reflection</em>), whether they require multi-hop reasoning (<em>Multi-hop</em>), whether they are human-annotated (<em>Human Annotated</em>), and whether they support open-web search (<em>Open Search</em>). MERRIN uniquely covers all dimensions, supporting multiple evidence modalities across text (T), image (I), video (V), and audio (A). "&ndash;" in <em>No Explicit Modality Cues</em> indicates settings where modality selection is unnecessary (e.g., controlled or single modality setups).</p>
+    </div>
+</section>
+
+<!-- Experiments -->
+<section class="section" id="experiments">
+    <div class="container">
+        <h2 class="section-title">Experiments</h2>
+
+        <h3 class="subsection-title">Search Settings</h3>
+        <p class="subsection-description">We evaluate search-augmented agents powered by ten models under three search settings:</p>
+        <div class="settings-grid">
+            <div class="setting-card">
+                <h3>No Search</h3>
+                <p>No search tool is provided. The model relies solely on its parametric knowledge to answer questions.</p>
+            </div>
+            <div class="setting-card">
+                <h3>Native Search</h3>
+                <p>Each model uses its built-in search tools (e.g., Google Search for Gemini, Bing for GPT). Native Search often does <em>not</em> support video and audio processing.</p>
+            </div>
+            <div class="setting-card">
+                <h3>Agentic Multimodal Search</h3>
+                <p>A multimodal search agent framework (built with <a href="https://github.com/huggingface/smolagents" target="_blank">smolagents</a>) equips models with tools to search, visit webpages, and process videos across <em>all</em> modalities.</p>
+            </div>
+        </div>
+
+        <hr class="section-divider">
+
+        <h3 class="subsection-title">Results</h3>
+        <div class="results-summary">
+            <div class="stat-card">
+                <div class="stat-number">22.3%</div>
+                <div class="stat-label">Average Accuracy<br>(All Agents)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">40.1%</div>
+                <div class="stat-label">Best Agent<br>(Gemini-3.1-Pro)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">71.4%</div>
+                <div class="stat-label">Human<br>Performance</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">47.7%</div>
+                <div class="stat-label">Gold Sources<br>Prompting Ceiling</div>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <table class="results-table grouped-table">
+                <thead>
+                    <tr class="group-header">
+                        <th rowspan="2" class="col-model">Model</th>
+                        <th colspan="1" class="group-nosearch">No Search</th>
+                        <th colspan="3" class="group-native">Native Search</th>
+                        <th colspan="3" class="group-agentic">Agentic Multimodal Search</th>
+                    </tr>
+                    <tr class="sub-header">
+                        <th class="group-nosearch">Acc</th>
+                        <th class="group-native">Acc</th>
+                        <th class="group-native"># Search Qs</th>
+                        <th class="group-native"># Pages</th>
+                        <th class="group-agentic">Acc</th>
+                        <th class="group-agentic"># Search Qs</th>
+                        <th class="group-agentic"># Pages</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Qwen3-4B</td>
+                        <td class="col-nosearch">10.3<sub>&plusmn;0.4</sub></td>
+                        <td class="col-native">&ndash;</td><td class="col-native">&ndash;</td><td class="col-native">&ndash;</td>
+                        <td class="col-agentic">10.5<sub>&plusmn;1.6</sub></td>
+                        <td class="col-agentic">1.7<sub>&plusmn;0.0</sub></td><td class="col-agentic">0.2<sub>&plusmn;0.1</sub></td>
+                    </tr>
+                    <tr>
+                        <td>Qwen3-30B</td>
+                        <td class="col-nosearch">8.0<sub>&plusmn;0.6</sub></td>
+                        <td class="col-native">&ndash;</td><td class="col-native">&ndash;</td><td class="col-native">&ndash;</td>
+                        <td class="col-agentic">16.1<sub>&plusmn;0.6</sub></td>
+                        <td class="col-agentic">2.0<sub>&plusmn;0.1</sub></td><td class="col-agentic">0.5<sub>&plusmn;0.0</sub></td>
+                    </tr>
+                    <tr>
+                        <td>Qwen3-235B</td>
+                        <td class="col-nosearch">12.1<sub>&plusmn;0.9</sub></td>
+                        <td class="col-native">&ndash;</td><td class="col-native">&ndash;</td><td class="col-native">&ndash;</td>
+                        <td class="col-agentic">23.3<sub>&plusmn;1.3</sub></td>
+                        <td class="col-agentic">3.0<sub>&plusmn;0.2</sub></td><td class="col-agentic">1.0<sub>&plusmn;0.1</sub></td>
+                    </tr>
+                    <tr class="separator"><td colspan="8"></td></tr>
+                    <tr>
+                        <td>GPT-5.4-nano</td>
+                        <td class="col-nosearch">9.9<sub>&plusmn;2.7</sub></td>
+                        <td class="col-native">12.6<sub>&plusmn;1.3</sub></td><td class="col-native">37.7<sub>&plusmn;2.4</sub></td><td class="col-native">5.9<sub>&plusmn;0.4</sub></td>
+                        <td class="col-agentic">31.9<sub>&plusmn;3.0</sub></td>
+                        <td class="col-agentic">11.6<sub>&plusmn;0.4</sub></td><td class="col-agentic">7.5<sub>&plusmn;0.4</sub></td>
+                    </tr>
+                    <tr>
+                        <td>GPT-5.4-mini</td>
+                        <td class="col-nosearch">14.0<sub>&plusmn;0.4</sub></td>
+                        <td class="col-native">15.6<sub>&plusmn;0.4</sub></td><td class="col-native">38.6<sub>&plusmn;3.7</sub></td><td class="col-native">5.3<sub>&plusmn;0.2</sub></td>
+                        <td class="col-agentic">31.1<sub>&plusmn;3.1</sub></td>
+                        <td class="col-agentic">9.2<sub>&plusmn;0.3</sub></td><td class="col-agentic">3.4<sub>&plusmn;0.2</sub></td>
+                    </tr>
+                    <tr>
+                        <td>Gemini 3 Flash</td>
+                        <td class="col-nosearch">19.1<sub>&plusmn;3.2</sub></td>
+                        <td class="col-native">31.7<sub>&plusmn;3.8</sub></td><td class="col-native">44.1<sub>&plusmn;0.6</sub></td><td class="col-native">0.1<sub>&plusmn;0.0</sub></td>
+                        <td class="col-agentic">32.9<sub>&plusmn;0.9</sub></td>
+                        <td class="col-agentic">14.8<sub>&plusmn;0.5</sub></td><td class="col-agentic">1.4<sub>&plusmn;0.0</sub></td>
+                    </tr>
+                    <tr>
+                        <td>Gemini 3 Pro</td>
+                        <td class="col-nosearch">23.5<sub>&plusmn;1.1</sub></td>
+                        <td class="col-native">28.8<sub>&plusmn;1.4</sub></td><td class="col-native">34.9<sub>&plusmn;2.0</sub></td><td class="col-native">0.1<sub>&plusmn;0.0</sub></td>
+                        <td class="col-agentic">39.9<sub>&plusmn;1.6</sub></td>
+                        <td class="col-agentic">8.4<sub>&plusmn;0.3</sub></td><td class="col-agentic">3.0<sub>&plusmn;0.1</sub></td>
+                    </tr>
+                    <tr>
+                        <td>Gemini 3.1 Lite</td>
+                        <td class="col-nosearch">12.8<sub>&plusmn;2.3</sub></td>
+                        <td class="col-native">20.6<sub>&plusmn;2.2</sub></td><td class="col-native">19.2<sub>&plusmn;1.1</sub></td><td class="col-native">0.0<sub>&plusmn;0.0</sub></td>
+                        <td class="col-agentic">26.3<sub>&plusmn;1.9</sub></td>
+                        <td class="col-agentic">8.3<sub>&plusmn;0.1</sub></td><td class="col-agentic">0.8<sub>&plusmn;0.1</sub></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gemini 3.1 Pro</strong></td>
+                        <td class="col-nosearch"><strong>24.7</strong><sub>&plusmn;1.6</sub></td>
+                        <td class="col-native">29.0<sub>&plusmn;1.1</sub></td><td class="col-native">35.8<sub>&plusmn;0.9</sub></td><td class="col-native">0.1<sub>&plusmn;0.0</sub></td>
+                        <td class="col-agentic"><strong>40.1</strong><sub>&plusmn;2.8</sub></td>
+                        <td class="col-agentic">8.6<sub>&plusmn;0.3</sub></td><td class="col-agentic">2.9<sub>&plusmn;0.0</sub></td>
+                    </tr>
+                    <tr class="separator"><td colspan="8"></td></tr>
+                    <tr>
+                        <td>Gemini Deep Research</td>
+                        <td class="col-nosearch">&ndash;</td>
+                        <td class="col-native"><strong>33.3</strong><sub>&plusmn;2.2</sub></td><td class="col-native">&ndash;</td><td class="col-native">&ndash;</td>
+                        <td class="col-agentic">&ndash;</td><td class="col-agentic">&ndash;</td><td class="col-agentic">&ndash;</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="table-caption">Performance of search agents powered by different models on MERRIN. <strong>Acc</strong> denotes average accuracy (%) over three runs with standard deviation, <strong># Search Qs</strong> is the average number of search queries issued per question, and <strong># Pages</strong> is the average number of webpages explicitly visited and read per question. No Search has no search module; thus, both # Search Qs and # Pages are 0. Gemini 3.1 Lite refers to Gemini 3.1 Flash Lite, and Gemini Research refers to the Gemini Deep Research Agent. For Qwen models, Native Search is not applicable since they do not have an internal search agent. Gemini Research only supports using its built-in search system (Native Search) and detailed outputs are unavailable, so # Search Qs and # Pages are omitted.</p>
+    </div>
+</section>
+
+<!-- Performance Decomposition -->
+<section class="section section-alt" id="analysis">
+    <div class="container">
+        <h2 class="section-title">Decomposing the Performance Gap</h2>
+        <p class="section-description">To isolate whether performance limitations stem from search or reasoning, we progressively provide gold evidence to the best agent (Gemini-3.1-Pro).</p>
+
+        <div class="table-wrapper">
+            <table class="decomp-table">
+                <thead>
+                    <tr>
+                        <th>Setting</th>
+                        <th>Web Search</th>
+                        <th>Gold Sources</th>
+                        <th>Agent Tools</th>
+                        <th>Acc.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="decomp-group-1">
+                        <td><em>No Search</em></td>
+                        <td class="cross">&cross;</td>
+                        <td class="cross">&cross;</td>
+                        <td class="cross">&cross;</td>
+                        <td>24.7<sub>&plusmn;1.6</sub></td>
+                    </tr>
+                    <tr class="decomp-group-1">
+                        <td><em>Native Search</em></td>
+                        <td class="check">&check;</td>
+                        <td class="cross">&cross;</td>
+                        <td class="cross">&cross;</td>
+                        <td>29.0<sub>&plusmn;1.1</sub></td>
+                    </tr>
+                    <tr class="decomp-group-2">
+                        <td><em>Agentic Multimodal Search</em></td>
+                        <td class="check">&check;</td>
+                        <td class="cross">&cross;</td>
+                        <td class="check">&check;</td>
+                        <td>40.1<sub>&plusmn;2.8</sub></td>
+                    </tr>
+                    <tr class="decomp-group-2">
+                        <td>&emsp;+ <em>Gold Sources Injection</em></td>
+                        <td class="check">&check;</td>
+                        <td class="check">&check;</td>
+                        <td class="check">&check;</td>
+                        <td>43.4<sub>&plusmn;3.8</sub></td>
+                    </tr>
+                    <tr class="decomp-group-2">
+                        <td>&emsp;+ <em>Gold Sources Only</em></td>
+                        <td class="cross">&cross;</td>
+                        <td class="check">&check;</td>
+                        <td class="check">&check;</td>
+                        <td>45.5<sub>&plusmn;2.3</sub></td>
+                    </tr>
+                    <tr class="decomp-group-3">
+                        <td><em>Gold Sources Prompting</em></td>
+                        <td class="cross">&cross;</td>
+                        <td class="check">&check;</td>
+                        <td class="cross">&cross;</td>
+                        <td>47.7<sub>&plusmn;2.0</sub></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="table-caption">Isolating search vs. reasoning limitations for Gemini-3.1-Pro on MERRIN. <strong>Web Search</strong>: whether the agent can search the open web. <strong>Gold Sources</strong>: whether gold sources are provided. <strong>Agent Tools</strong>: whether the agent can use custom tools (visit_webpage, watch_video) to process evidence.</p>
+
+        <div class="decomp-insight">
+            <div class="insight-box">
+                <div class="insight-header">Search Gap</div>
+                <div class="insight-value">+7.6%</div>
+                <p>From open search to perfect gold evidence (40.1% &rarr; 47.7%), upper-bounding the cost of search-stage limitations.</p>
+            </div>
+            <div class="insight-box">
+                <div class="insight-header">Reasoning Gap</div>
+                <div class="insight-value">&gt; 50%</div>
+                <p>Even with perfect gold evidence, accuracy remains at only 47.7%, indicating that while both search and reasoning remain critical challenges, improving reasoning is the more pressing bottleneck.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Human vs Agent -->
+<section class="section" id="human">
+    <div class="container">
+        <h2 class="section-title">Human vs. Agent Performance</h2>
+        <div class="table-wrapper">
+            <table class="human-table full-human-table">
+                <thead>
+                    <tr class="group-header">
+                        <th rowspan="2">System</th>
+                        <th colspan="3">Performance</th>
+                        <th colspan="3">Search Effort</th>
+                        <th colspan="3">Modality (%)</th>
+                        <th colspan="3">URL Overlap w/ Golden</th>
+                    </tr>
+                    <tr class="sub-header">
+                        <th>Acc. (%)</th>
+                        <th>Acc@5min (%)</th>
+                        <th>Time (min)</th>
+                        <th>Searches</th>
+                        <th>Visits</th>
+                        <th>URLs</th>
+                        <th>Text</th>
+                        <th>Video</th>
+                        <th>Image</th>
+                        <th>Prec.</th>
+                        <th>Rec.</th>
+                        <th>F1</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="human-row">
+                        <td><strong>Human</strong></td>
+                        <td><strong>71.4</strong></td>
+                        <td>59.2</td>
+                        <td>4.1</td>
+                        <td>2.9</td>
+                        <td>2.9</td>
+                        <td>&ndash;</td>
+                        <td>53.2</td>
+                        <td>28.2</td>
+                        <td>18.5</td>
+                        <td>38.1</td>
+                        <td>48.9</td>
+                        <td>42.8</td>
+                    </tr>
+                    <tr>
+                        <td>Native</td>
+                        <td>30.9</td>
+                        <td>29.6</td>
+                        <td>2.3</td>
+                        <td>9.8</td>
+                        <td>0.1</td>
+                        <td>34.9</td>
+                        <td>96.2</td>
+                        <td>0.0</td>
+                        <td>3.8</td>
+                        <td>&ndash;</td>
+                        <td>&ndash;</td>
+                        <td>&ndash;</td>
+                    </tr>
+                    <tr>
+                        <td>Agentic</td>
+                        <td>40.1</td>
+                        <td>34.0</td>
+                        <td>4.0</td>
+                        <td>9.1</td>
+                        <td>3.5</td>
+                        <td>63.6</td>
+                        <td>87.0</td>
+                        <td>4.4</td>
+                        <td>8.5</td>
+                        <td>1.8</td>
+                        <td>61.4</td>
+                        <td>3.6</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="table-caption">Performance across human annotators, Native Search (Native), and Agentic Multimodal Search (Agentic) with Gemini 3.1 Pro. <strong>Acc@5min</strong>: accuracy under a 5-minute budget, where any question taking more than 5 minutes is counted as incorrect. <strong>Time</strong>: average completion time in minutes. <strong>Search Effort</strong>: average number of search queries issued (Searches), webpages visited (Visits), and unique URLs encountered (URLs) per question. <strong>Modality</strong>: distribution of resource modalities among accessed content. <strong>URL Overlap w/ Golden</strong>: precision, recall, and F1 of the system's visited URLs against the golden reference URLs.</p>
+
+        <h3 class="subsection-title">Key Findings</h3>
+        <div class="findings-grid">
+            <div class="finding-card">
+                <div class="finding-icon"><i class="fa-solid fa-bullseye"></i></div>
+                <h4>Higher Accuracy, Fewer Resources</h4>
+                <p>Humans achieve 71.4% accuracy with only 2.9 searches and 2.9 visits, while the agentic system needs 9.1 searches and 3.5 visits to reach only 40.1%.</p>
+            </div>
+            <div class="finding-card">
+                <div class="finding-icon"><i class="fa-solid fa-crosshairs"></i></div>
+                <h4>Precise Source Selection</h4>
+                <p>Humans achieve 38.1% URL precision vs. 1.8% for agents. Although agents attain high recall (61.4%) due to the sheer volume of URLs, the vast majority are irrelevant.</p>
+            </div>
+            <div class="finding-card">
+                <div class="finding-icon"><i class="fa-solid fa-photo-film"></i></div>
+                <h4>Balanced Modality Use</h4>
+                <p>Humans use a balanced mix of modalities (53.2% text, 28.2% video, 18.5% image), while agents are heavily text-dominant (87.0% text for agentic, 96.2% for native).</p>
+            </div>
+            <div class="finding-card">
+                <div class="finding-icon"><i class="fa-solid fa-clock"></i></div>
+                <h4>Diminishing Returns for Agents</h4>
+                <p>Humans benefit substantially from additional time (59.2% &rarr; 71.4%), while agents show diminishing returns (34.0% &rarr; 40.1%), consistent with over-exploration rather than productive deepening of search.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Citation -->
+<section class="section section-alt" id="citation">
+    <div class="container">
+        <h2 class="section-title">Citation</h2>
+        <div class="citation-box">
+            <button class="copy-btn" onclick="copyBibtex()"><i class="fa-regular fa-copy"></i> Copy</button>
+<pre><code>@article{wang2026merrin,
+  title={MERRIN: Multimodal Evidence Retrieval and Reasoning in Noisy Web Environments},
+  author={Han Wang and David Wan and Hyunji Lee and Thinh Pham and Mikaela Cankosyan and Weiyuan Chen and Elias Stengel-Eskin and Tu Vu and Mohit Bansal},
+  year={2026},
+  journal={arXiv preprint arXiv:}
+}</code></pre>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <p>MERRIN Benchmark &middot; UNC Chapel Hill &middot; Virginia Tech &middot; UT Austin</p>
+    </div>
+</footer>
+
+<script>
+function copyBibtex() {
+    const code = document.querySelector('.citation-box code').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+        const btn = document.querySelector('.copy-btn');
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+        setTimeout(() => {
+            btn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy';
+        }, 2000);
+    });
+}
+</script>
+
+</body>
+</html>
